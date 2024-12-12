@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reportar Resultado - Mesa {{ mesa_id }}</title>
+    <!-- Linking external CSS for consistent styling -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <style>
+      /* Optional: Additional styles specific to this page */
+    </style>
+  </head>
+  <body>
+    <!-- Header for consistent branding -->
+    <header>
+      <h1>Torneio AO VIVO</h1>
+    </header>
+
+    <main>
+      <!-- Main container for reporting results -->
+      <div class="mesa-container center-content">
+        <h1>Reportar Resultado da Mesa {{ mesa_id }}</h1>
+
+        <!-- Buttons for result options -->
+        <div class="buttons-container">
+          <button class="button" onclick="report('Vitória Jogador 1')">
+            Vitória Jogador 1
+          </button>
+          <button class="button" onclick="report('Vitória Jogador 2')">
+            Vitória Jogador 2
+          </button>
+          <button class="button" onclick="report('Empate')">Empate</button>
+          <button class="button" onclick="report('Derrota dupla')">
+            Derrota dupla
+          </button>
+          <button class="button red" onclick="clearReport()">
+            Reporte Incorreto
+          </button>
+        </div>
+
+        <!-- Display container for the current result -->
+        <div class="resultado-container" id="resultado">
+          Resultado: Nenhum resultado reportado ainda.
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer for additional branding -->
+    <footer>
+      <p>© 2024 Torneio AO VIVO - Powered by Bender & Marco</p>
+    </footer>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+      // Get the current table ID from the template variable
+      const mesaId = {{ mesa_id }};
+
+      // Function to report a result
+      function report(result) {
+        fetch('/report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mesa_id: mesaId, resultado: result })
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message || 'Resultado reportado com sucesso!');
+          // Update the displayed result dynamically
+          document.getElementById("resultado").innerText = `Resultado: ${result}`;
+        })
+        .catch(error => alert('Erro ao reportar. Tente novamente.'));
+      }
+
+      // Function to clear a reported result
+      function clearReport() {
+        fetch('/clear-report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mesa_id: mesaId })
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message || 'Reporte removido!');
+          // Reset the displayed result dynamically
+          document.getElementById("resultado").innerText = "Resultado: Nenhum resultado reportado ainda.";
+        })
+        .catch(error => alert('Erro ao limpar reporte.'));
+      }
+    </script>
+  </body>
+</html>

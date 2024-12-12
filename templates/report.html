@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Round Results</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Page header -->
+    <h1>Round Results</h1>
+
+    <!-- Table to display round results -->
+    <table>
+      <thead>
+        <tr>
+          <th>Table</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody id="resultados-tabela">
+        <!-- Dynamically populated by JavaScript -->
+      </tbody>
+    </table>
+
+    <!-- Button to clear results -->
+    <button id="limpar-resultados" class="button red">Clear Results</button>
+
+    <script>
+      /**
+       * Fetch and display the round results from the server.
+       */
+      async function fetchResultados() {
+        const response = await fetch("/get-resultados"); // API endpoint to get results
+        const data = await response.json();
+        const tabela = document.getElementById("resultados-tabela");
+        tabela.innerHTML = ""; // Clear the table before populating
+
+        // Populate the table with results
+        Object.entries(data.resultados).forEach(([mesa, resultado]) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${mesa}</td>
+            <td>${resultado}</td>
+          `;
+          tabela.appendChild(row);
+        });
+      }
+
+      /**
+       * Event listener for the "Clear Results" button.
+       * Sends a POST request to clear results and reloads the table.
+       */
+      document
+        .getElementById("limpar-resultados")
+        .addEventListener("click", () => {
+          fetch("/limpar-resultados", { method: "POST" }) // API endpoint to clear results
+            .then((response) => response.json())
+            .then((data) => {
+              alert(data.message || "Results cleared successfully!");
+              fetchResultados(); // Reload results
+            })
+            .catch((error) => alert("Error clearing results."));
+        });
+
+      // Fetch and display results when the page is loaded
+      fetchResultados();
+    </script>
+  </body>
+</html>
