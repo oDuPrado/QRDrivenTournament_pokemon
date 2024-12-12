@@ -92,18 +92,6 @@ python --version
 
 ---
 
-## **Screenshots**
-
-### **1. QR Code Generator**
-
-<img src="https://via.placeholder.com/600x400" alt="QR Code Generator" />
-
-### **2. Result Dashboard**
-
-<img src="https://via.placeholder.com/600x400" alt="Result Dashboard" />
-
----
-
 ## **Contributing**
 
 Contributions are welcome! Follow these steps to contribute:
@@ -120,6 +108,3 @@ Contributions are welcome! Follow these steps to contribute:
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
-
-This README provides a clear and professional overview of your project, making it easy for others to understand and contribute.
