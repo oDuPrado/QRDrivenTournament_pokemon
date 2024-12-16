@@ -1,7 +1,5 @@
 # QRDrivenTournament
 
-Here’s a simplified and cohesive README template tailored for your project:
-
 ---
 
 # **Tournament Manager**
